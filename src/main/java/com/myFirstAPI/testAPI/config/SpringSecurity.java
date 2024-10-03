@@ -25,13 +25,14 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(request -> request
-                        .requestMatchers("/public/**").permitAll()
+        return http
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/journal/**", "/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
+                        .anyRequest().permitAll()
+                )
+                .httpBasic(Customizer.withDefaults()) // Use default settings for basic authentication
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF (optional, depending on use case)
                 .build();
     }
 
@@ -44,5 +45,5 @@ public class SpringSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}
+    }
 
