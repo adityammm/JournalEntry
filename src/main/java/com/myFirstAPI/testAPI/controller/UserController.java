@@ -22,36 +22,24 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    @GetMapping
-    public List<User>getAllUsers(){
-        return userService.getAllEntry();
-    }
-
-    @PostMapping
-    public void saveUser(@RequestBody User user){
-        userService.saveNewUser(user);
-    }
-
-    @PutMapping("updateUser")
-    public ResponseEntity<?> updateUser(@RequestBody User user){
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-        User userInDB = userService.findByUserName(userName);
-        if(userInDB != null){
-            userInDB.setUserName(user.getUserName());
-            userInDB.setPassword(user.getPassword());
-            userService.saveNewUser(userInDB);
-        }
+        User userInDb = userService.findByUserName(userName);
+        userInDb.setUserName(user.getUserName());
+        userInDb.setPassword(user.getPassword());
+        userService.saveNewUser(userInDb);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUser(){
+    public ResponseEntity<?> deleteUserById() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.deleteByUserName(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
