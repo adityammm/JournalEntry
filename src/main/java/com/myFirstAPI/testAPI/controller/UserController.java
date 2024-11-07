@@ -2,9 +2,11 @@ package com.myFirstAPI.testAPI.controller;
 
 import com.myFirstAPI.testAPI.entity.JournalEntry;
 import com.myFirstAPI.testAPI.entity.User;
+import com.myFirstAPI.testAPI.entity.Weather;
 import com.myFirstAPI.testAPI.repository.UserRepository;
 import com.myFirstAPI.testAPI.service.JournalEntryService;
 import com.myFirstAPI.testAPI.service.UserService;
+import com.myFirstAPI.testAPI.service.WeatherService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private WeatherService weatherService;
+
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,6 +48,17 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.deleteByUserName(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greetings() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Weather weather = weatherService.getWeatherDetails("Jaipur");
+        String greetings = "";
+        if(weather != null){
+            greetings = " Weather feels like "+String.valueOf(weather.getCurrent().getFeelslikeC());
+        }
+        return new ResponseEntity<>("Hi "+authentication.getName() + greetings, HttpStatus.OK);
     }
 
 
