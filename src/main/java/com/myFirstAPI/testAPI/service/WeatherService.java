@@ -2,6 +2,7 @@ package com.myFirstAPI.testAPI.service;
 
 import com.myFirstAPI.testAPI.entity.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class WeatherService {
 
-    private static final String apiKey = "f152a5b53945467d8c155645240711";
+    @Value("${weather.api.key}")
+    private String apiKey;
 
     private static final String url = "http://api.weatherapi.com/v1/current.json?key=API_KEY&q=CITY&aqi=no";
 
