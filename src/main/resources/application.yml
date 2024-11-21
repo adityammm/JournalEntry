@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Test API
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      uri: mongodb+srv://joshivabhav2:zZvDvag4xbuoiSOq@cluster0.9pmki.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: journaldb
+      auto-index-creation: true
+  main:
+    allow-circular-references: true
+  mail:
+    host: smtp.gmail.com
+    port: 578
+    username: adityamjoshi8@gmail.com
+    password: lnmu slbs wkgy gzgv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+weather:
+  api:
+    key: f152a5b53945467d8c155645240711
